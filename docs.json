@@ -41,5 +41,8 @@
   "logo": {
     "light": "/images/Nebula-Purple.png",
     "dark": "/images/Nebula-Purple.png"
+  },
+  "appearance": {
+    "default": "dark"
   }
 }
