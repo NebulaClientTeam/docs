@@ -1,0 +1,40 @@
+---
+title: Overview
+description: Learn about routes — saved navigation paths that guide your character through waypoints automatically.
+---
+
+Routes are saved navigation paths that guide your character through a series of waypoints. Once created, a route can be reused by any macro that supports it — the client will automatically walk, etherwarp, wait, or interact with items at each waypoint in order.
+
+## Route Types
+
+- **Simple** — A basic sequence of waypoints with no warp. Use this when you're already on the correct island and just need a walking/etherwarp path.
+- **Warp** — Starts by running a `/warp` command before following waypoints. You can optionally lock it to a specific island so it verifies you landed in the right place.
+- **Island** — Tied to a specific Skyblock island. The client will navigate to that island before starting the route. No custom warp command — it uses the island's default warp.
+- **Mining** — A specialized route for mining macros. Supports anchor blocks (ore positions tied to specific waypoints) and an optional warp command.
+
+## Waypoint Types
+
+Each waypoint in a route is one of these:
+
+| Type | What it does |
+|------|-------------|
+| **Walk** | Pathfinds and walks to a position. Supports optional sneak, allow movement, and jump-at-end flags. |
+| **Etherwarp** | Teleports to a position using the Aspect of the Void / End ability. Same optional flags as Walk. |
+| **WaitTime** | Pauses for a set duration (in milliseconds) before continuing to the next waypoint. |
+| **WaitForPosition** | Waits until your character reaches a position within a given distance, or until a timeout expires. Useful after warps or external movement. |
+| **ItemPlace** | Holds and right-clicks an item at a target block. You specify the item ID and an optional cooldown. You must be looking at the target block when adding this waypoint. |
+
+## Rendering
+
+When a route is being previewed or executed, waypoints are rendered in-world as colored boxes connected by lines:
+
+- **Walk** — Light green
+- **Etherwarp** — Light purple
+- **WaitTime** — Cyan
+- **WaitForPosition** — Orange
+- **ItemPlace** — Red
+- **Anchor blocks** (mining) — Purple
+
+## Sharing
+
+Routes can be exported and imported via clipboard. Use `/nebula routes export` to open the export GUI where you select which routes to copy, or `/nebula routes import` to paste and import routes from another player. The format is compressed and prefixed with `nbroute:` (single) or `nbroutes:` (multiple).

@@ -1,0 +1,36 @@
+---
+title: Multi Routes
+description: Group multiple route variants under one name for randomized path selection.
+---
+
+A **Multi Route** is a collection of multiple routes grouped under one name. When a macro runs a Multi Route, it **randomly picks one** of the sub-routes each time. This adds variety to your automation path, making movement less predictable.
+
+## Creating a Multi Route
+
+Multi Routes are created through the file system. In your `Nebula/Routes/` folder:
+
+1. Create a folder named `<route_name>.route` (the `.route` suffix is required).
+2. Place multiple route JSON files inside that folder — each one is a sub-route.
+
+For example:
+
+```
+Nebula/Routes/
+  mining_loop.route/
+    path_a.json
+    path_b.json
+    path_c.json
+```
+
+This creates a Multi Route called `mining_loop` with three variants.
+
+## How Multi Routes Affect Macros
+
+- When a macro executes a Multi Route, one sub-route is chosen **at random** each time the route is started.
+- All sub-routes should have the same general start/end points since macros expect consistent behavior.
+- Multi Routes cannot be edited in the route builder — edit the individual sub-routes instead.
+- Multi Routes are displayed with a pink indicator in the GUI.
+
+## Using Multi Routes with Macro Settings
+
+You reference a Multi Route by name just like any other route. The macro setting doesn't distinguish between single and multi routes — you just type the name and the client handles the rest.

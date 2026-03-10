@@ -28,6 +28,16 @@
         "pages": [
           "welcome"
         ]
+      },
+      {
+        "group": "Routes",
+        "pages": [
+          "routes/overview",
+          "routes/command-builder",
+          "routes/gui-builder",
+          "routes/multi-routes",
+          "routes/macro-integration"
+        ]
       }
     ]
   },

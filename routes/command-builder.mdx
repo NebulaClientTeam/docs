@@ -1,0 +1,136 @@
+---
+title: Command-Based Builder
+description: Create and edit routes entirely through chat commands.
+---
+
+The route builder lets you create and edit routes entirely through chat commands. All commands are under `/nebula routes builder`.
+
+## Creating a Route
+
+```
+/nebula routes builder create <type> <name>
+```
+
+Types: `Simple`, `Warp`, `Island`, `Mining`
+
+The name can include slashes for organization (e.g., `mining/crystal-hollows/jade`).
+
+## Editing an Existing Route
+
+```
+/nebula routes builder editRoute <name>
+```
+
+Loads the route into the builder so you can modify it. Save when done.
+
+## Adding Waypoints
+
+Stand at the desired position, then run:
+
+```
+/nebula routes builder add <type> [args]
+```
+
+- `add Walk` — Adds a walk waypoint at your feet.
+- `add Etherwarp` — Adds an etherwarp waypoint at your feet.
+- `add WaitTime <milliseconds>` — Adds a wait (e.g., `add WaitTime 3000` for 3 seconds).
+- `add WaitForPosition <distance> <timeout_ms>` — Waits until within `distance` blocks, times out after `timeout_ms`.
+- `add ItemPlace <item_id> [cooldown_ms]` — Places an item. You must be looking at the target block. Example: `add ItemPlace ender_pearl 5000`.
+
+Waypoints are added to the end of the route in order.
+
+## Inserting a Waypoint at a Specific Position
+
+```
+/nebula routes builder insert <index> <type> [args]
+```
+
+Inserts before the given index (1-based). Existing waypoints shift forward.
+
+## Moving a Waypoint
+
+Stand at the new position, then:
+
+```
+/nebula routes builder edit <index>
+```
+
+This updates the position of waypoint `#index` to your current location while keeping its type and configuration.
+
+## Removing a Waypoint
+
+Stand on the waypoint you want to remove:
+
+```
+/nebula routes builder remove
+```
+
+## Clearing All Waypoints
+
+```
+/nebula routes builder clear
+```
+
+## Configuring Waypoint Flags
+
+Walk and Etherwarp waypoints support extra flags:
+
+```
+/nebula routes builder config <index> <key> <value>
+```
+
+Available keys:
+
+- `sneak` (or `shift`) — `true` / `false` — Force sneaking during this waypoint.
+- `movement` (or `allowmovement`) — `true` / `false` — Allow player movement input.
+- `jumpatend` (or `jump`) — `true` / `false` — Jump after reaching this waypoint (useful before etherwarp waypoints).
+
+## Setting Warp Command
+
+For Warp and Mining type routes:
+
+```
+/nebula routes builder warpCommand <command>
+```
+
+Sets the warp command (without the `/warp` prefix — just the destination name, e.g., `forge`).
+
+## Setting Target Island
+
+For Warp and Island type routes:
+
+```
+/nebula routes builder warpIsland
+```
+
+Sets the target island to your **current** island. You must be on the correct island when running this.
+
+## Adding Anchor Blocks
+
+For Mining type routes only. Look at an ore/block and run:
+
+```
+/nebula routes builder anchor <waypoint_index>
+```
+
+This toggles the block you're looking at as an anchor for the given waypoint. Run it again on the same block to remove it. Anchor blocks tell the mining macro which blocks to prioritize at each waypoint.
+
+## Saving
+
+```
+/nebula routes builder save
+```
+
+Saves the route and clears the builder. The route is immediately available for use.
+
+## Discarding Changes
+
+```
+/nebula routes builder reset
+```
+
+## Renaming
+
+```
+/nebula routes builder name <new_name>
+```

@@ -1,0 +1,65 @@
+---
+title: Macro Integration
+description: How routes integrate with macros, including return routes, mining routes, and commission navigation.
+---
+
+## Other Route Commands
+
+```
+/nebula routes render <name>     — Preview a route in-world
+/nebula routes test <name>       — Run a route manually (with optional flags)
+/nebula routes reload            — Reload all routes from disk
+/nebula routes export            — Open the export GUI
+/nebula routes import            — Import routes from clipboard
+```
+
+The `test` command accepts optional boolean flags after the name:
+
+```
+/nebula routes test <name> [loop] [oneWaypoint] [detectIndex] [tryAnyVisible] [tryToLastPoint] [shouldWarp]
+```
+
+- **loop** — Repeat the route forever.
+- **oneWaypoint** — Stop after completing one waypoint.
+- **detectIndex** — Auto-detect which waypoint to start from based on your position (default: true).
+- **tryAnyVisible** — Start from any visible etherwarp point.
+- **tryToLastPoint** — Skip directly to the last waypoint if reachable.
+- **shouldWarp** — Warp before starting the route.
+
+## Return Back Routes
+
+Most macros have a **Return Back** category in their settings with:
+
+- **Enable Return Back** — Toggle return functionality on/off.
+- **Return Back Route** — The route name to follow when returning.
+
+The return route runs automatically when:
+
+- The **scheduler** pauses and resumes the macro (e.g., after a break).
+- A **warp failsafe** fires (you got unexpectedly teleported).
+- You **die** and respawn.
+- You **disconnect** and reconnect.
+
+The return route should lead from a known spawn/warp point back to your macro's operating area. Use a **Warp** or **Island** type route so the client can warp to the correct island first.
+
+## Mining Macro
+
+The mining macro has deep route integration through its **Route** settings category:
+
+- **Route Mode** — Enable route-based mining instead of free-roam.
+- **Route Name** — The mining route to follow (must be a Mining type route).
+- **Anchor Blocks Mode** — Controls how anchor blocks are used:
+  - **None** — Ignore anchors entirely.
+  - **Blacklist** — Avoid mining the anchor blocks (treat them as structure).
+  - **Whitelist** — Only mine the anchor blocks at each waypoint.
+  - **First Priority** — Mine anchor blocks first, then other nearby ores.
+  - **Last Priority** — Mine other ores first, then anchors as fallback.
+- **Skip Waypoints without Anchors** — If a waypoint has no anchors defined, skip it and move to the next one.
+- **Etherwarp Rotation Duration Multiplier** — Speed multiplier for etherwarp rotation (lower = faster, higher = slower/safer).
+- **Use Walking Rotations** — Enable smooth rotation while walking between waypoints.
+
+When Route Mode is on, the macro follows the route's waypoints in order, mining at each stop before moving to the next. When all waypoints are done, it loops back to the start.
+
+## Dwarven & Glacite Commissions
+
+These macros use routes to navigate between commission areas and emissaries. Each commission type can have its own route configured. They support Multi Routes — so you can provide several path variants for each commission area.
