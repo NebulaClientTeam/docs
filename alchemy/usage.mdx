@@ -1,0 +1,99 @@
+---
+title: "Using the Alchemy Macro"
+description: "How to set up and run the Alchemy Macro and Bottle Filler for automated potion brewing and leveling."
+---
+
+The Alchemy Macro automates the entire potion brewing process — placing water bottles, adding ingredients, waiting for brews to finish, collecting potions, and selling them to an NPC. This guide covers the full setup from building the machine to running the macro.
+
+## Prerequisites
+
+- You must be on your **Private Island**
+- The [alchemy machine](/alchemy/building) must be built
+- You must have Cookie Booster active
+
+## Setup
+
+### 1. Build the Alchemy Machine
+
+Follow the [Building the Alchemy Machine](/alchemy/building) guide to build it on your Private Island.
+
+### 2. Fill Chests with Water Bottles
+
+1. Go to the **Wizard NPC** in **The Hub** and buy several stacks of **Glass Bottles**
+2. Travel back to your Private Island and stand in the **water** at the top of the alchemy machine
+3. Place Glass Bottles in your **hotbar**
+4. Enable the **Bottle Filler** macro
+
+### 3. Purchase Ingredients and Cookie Booster
+
+Choose the best ingredients using [Alchemy Calculator by SkyblockTools](https://skyblocktools.dev/alchemy-xp-calculator) and purchase required items on Bazaar. Make sure to also have Cookie Booster as it allows you to sell brewed potions.
+
+**Base Ingredient (required):**
+
+| Ingredient | Used On |
+| --- | --- |
+| Nether Wart | Water Bottle → Awkward Potion |
+
+**Potion Ingredients:**
+
+| Ingredient | Used On |
+| --- | --- |
+| Enchanted Blaze Rod | Awkward Potion |
+| Enchanted Cooked Mutton | Awkward Potion |
+| Enchanted Sugar Cane | Awkward Potion |
+| Enchanted Gold Block | Awkward Potion |
+| Enchanted Cookie | Awkward Potion |
+| Enchanted Fermented Spider Eye | Water Bottle |
+
+**Upgrade Ingredients (optional):**
+
+These upgrade potions beyond level V to VI, VII, or VIII:
+
+| Ingredient |
+| --- |
+| Enchanted Redstone Lamp |
+| Enchanted Glowstone |
+
+## Running the Macro
+
+1. Stand near the **brewing stands** on your Private Island
+2. Enable the **Alchemy Macro** via its assigned keybind
+3. The macro will automatically cycle through all nearby brewing stands and:
+   - Place **Water Bottles** from chests into empty brewing slots
+   - Add the appropriate **ingredient** based on the current potion stage
+   - Wait for brewing to finish
+   - Collect **finished potions** from completed stands
+   - **Sell potions** to an NPC when your inventory is full
+   - Optionally apply **upgrade ingredients** if configured
+
+## Settings
+
+| Setting | Description |
+| --- | --- |
+| **Upgrade Ingredient** | Select an upgrade ingredient to brew potions beyond level V |
+| **Auto Pick Up Finished Potions** | Automatically collect finished potions from brewing stands |
+| **Auto Put Water Bottles** | Automatically place water bottles into empty brewing slots |
+| **Auto Put Ingredients** | Automatically add ingredients to brewing stands |
+| **Show Stats HUD** | Display an on-screen HUD showing brews started and potions sold |
+
+## Brewing Recipes
+
+The macro follows this brewing chain:
+
+```text
+Water Bottle → (Nether Wart) → Awkward Potion → (Ingredient) → V Potion
+```
+
+If an upgrade ingredient is selected:
+
+```text
+V Potion → (Upgrade Ingredient) → VI / VII / VIII Potion
+```
+
+## Notes
+
+- The macro **auto-sells** finished potions to an NPC when your inventory is full, then resumes brewing
+- It **stops automatically** when your Alchemy skill reaches **level 50** (max) and notifies you
+- It's recommended to use player speed of 250 or lower
+- If all brewing stands end up empty or in a mixed/invalid state with no ingredients available, the macro will disable itself
+- The **Bottle Filler** and **Alchemy Macro** have separate keybinds — configure them in the Alchemy module settings
