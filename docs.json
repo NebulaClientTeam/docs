@@ -38,6 +38,13 @@
           "routes/multi-routes",
           "routes/macro-integration"
         ]
+      },
+      {
+        "group": "Alchemy",
+        "pages": [
+          "alchemy/building",
+          "alchemy/usage"
+        ]
       }
     ]
   },
