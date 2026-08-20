@@ -3,19 +3,14 @@ title: Multi Routes
 description: Group multiple route variants under one name for randomized path selection.
 ---
 
-A **Multi Route** is a collection of multiple routes grouped under one name. When a macro runs a Multi Route, it **randomly picks one** of the sub-routes each time. This adds variety to your automation path, making movement less predictable.
+A **Multi Route** is a collection of routes grouped under one name. When a macro runs a Multi Route, it **randomly picks one** of the sub-routes each time execution starts. This adds variety to your automation path, making movement less predictable.
 
 ## Creating a Multi Route
 
-Multi Routes are created through the file system. In your `Nebula/Routes/` folder:
-
-1. Create a folder named `<route_name>.route` (the `.route` suffix is required).
-2. Place multiple route JSON files inside that folder — each one is a sub-route.
-
-For example:
+A Multi Route is a folder named `<group_name>.route` inside your routes folder. Every route JSON file in that folder is one variant.
 
 ```
-Nebula/Routes/
+.minecraft/Nebula/Routes/routes/
   mining_loop.route/
     path_a.json
     path_b.json
@@ -24,13 +19,32 @@ Nebula/Routes/
 
 This creates a Multi Route called `mining_loop` with three variants.
 
-## How Multi Routes Affect Macros
+The easiest way to build one is to create each variant with the folder in its name, since a route name with slashes is saved into matching subfolders:
 
-- When a macro executes a Multi Route, one sub-route is chosen **at random** each time the route is started.
-- All sub-routes should have the same general start/end points since macros expect consistent behavior.
-- Multi Routes cannot be edited in the route builder — edit the individual sub-routes instead.
-- Multi Routes are displayed with a pink indicator in the GUI.
+```
+/nebula routes builder create Mining mining_loop.route/path_a
+```
 
-## Using Multi Routes with Macro Settings
+After saving the first variant, run `/nebula routes reload` (or press the reload button in the Routes screen) — the group itself only appears once the folder exists on disk.
 
-You reference a Multi Route by name just like any other route. The macro setting doesn't distinguish between single and multi routes — you just type the name and the client handles the rest.
+## How Multi Routes Behave
+
+- One sub-route is chosen **at random** each time the route is started.
+- All sub-routes should share the same general start and end points, since macros expect consistent behavior.
+- The group itself cannot be edited in the route builder or the GUI editor. Sub-routes are also loaded individually under their own names, so edit them one at a time.
+- Multi Routes are displayed with a pink `Multi · <count>` chip in the GUI, and the details panel lists their sub-routes.
+- Exporting includes sub-routes individually, listed as `<group>/<sub-route>`.
+- Deleting a Multi Route removes the whole folder.
+
+## Which Settings Accept Multi Routes
+
+Route settings only offer routes they can actually run, so a Multi Route does not appear in every picker:
+
+| Setting | Accepts a Multi Route |
+|---------|----------------------|
+| Return Back Route (all macros) | Yes |
+| Dwarven and Glacite commission routes | Yes |
+| Foraging macro **Route Name** | Yes, if every sub-route is a Foraging route |
+| Mining macro **Route Name** | No — it only accepts a single Mining route |
+
+Where a Multi Route is accepted, you reference it by name exactly like any other route.

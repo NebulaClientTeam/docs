@@ -5,12 +5,15 @@ description: Learn about routes — saved navigation paths that guide your chara
 
 Routes are saved navigation paths that guide your character through a series of waypoints. Once created, a route can be reused by any macro that supports it — the client will automatically walk, etherwarp, wait, or interact with items at each waypoint in order.
 
+Routes live in the **Misc → Routes** module. The module also holds all rendering settings described below.
+
 ## Route Types
 
 - **Simple** — A basic sequence of waypoints with no warp. Use this when you're already on the correct island and just need a walking/etherwarp path.
 - **Warp** — Starts by running a `/warp` command before following waypoints. You can optionally lock it to a specific island so it verifies you landed in the right place.
 - **Island** — Tied to a specific Skyblock island. The client will navigate to that island before starting the route. No custom warp command — it uses the island's default warp.
 - **Mining** — A specialized route for mining macros. Supports anchor blocks (ore positions tied to specific waypoints) and an optional warp command.
+- **Foraging** — A specialized route for the foraging macro. Supports tree centers (one position per waypoint marking the tree to chop there) and an optional warp command.
 
 ## Waypoint Types
 
@@ -18,23 +21,59 @@ Each waypoint in a route is one of these:
 
 | Type | What it does |
 |------|-------------|
-| **Walk** | Pathfinds and walks to a position. Supports optional sneak, allow movement, and jump-at-end flags. |
-| **Etherwarp** | Teleports to a position using the Aspect of the Void / End ability. Same optional flags as Walk. |
+| **Walk** | Pathfinds and walks to a position. Supports sneak, allow movement, jump-at-end, and reach distance overrides. |
+| **Etherwarp** | Teleports to a position using the Aspect of the Void / End ability. Supports sneak, allow movement, and jump-at-end overrides. |
 | **WaitTime** | Pauses for a set duration (in milliseconds) before continuing to the next waypoint. |
-| **WaitForPosition** | Waits until your character reaches a position within a given distance, or until a timeout expires. Useful after warps or external movement. |
-| **ItemPlace** | Holds and right-clicks an item at a target block. You specify the item ID and an optional cooldown. You must be looking at the target block when adding this waypoint. |
+| **WaitForPosition** | Waits until your character is within a given distance of the position, or until a timeout expires. Useful after warps or external movement. |
+| **ItemPlace** | Holds an item, rotates to the target block and right-clicks it. You specify the item ID and an optional cooldown. |
+
+### Waypoint Overrides
+
+Walk and Etherwarp waypoints carry per-waypoint overrides. Each one is tri-state — **Default** (leave it to whatever the macro asked for), **On**, or **Off**:
+
+- **Sneak** — Force sneaking on or off. The route executor reads it while travelling *away* from that waypoint; the mining macro reads it while mining *at* that waypoint.
+- **Allow Movement** — Overrides the mining macro's own movement setting while it mines at that waypoint. Only the mining macro and the Glacite commissions macro read this flag; the route executor ignores it.
+- **Jump At End** — Jump when the waypoint is reached. Mostly used right before an etherwarp waypoint.
+
+Walk waypoints have one extra numeric override, **Reach Distance**, which controls how close the pathfinder must get before the waypoint counts as reached. It defaults to the pathfinder's own value.
+
+### Waypoint Behaviour Notes
+
+- **Jump At End** is read from the *previous* waypoint when an etherwarp waypoint runs, so set it on the waypoint you jump *from*.
+- **ItemPlace** is skipped silently if the item ID is not in your hotbar, or if its cooldown has not elapsed since the last placement.
+- **WaitForPosition** can carry a timeout fallback — an action to run and a retry point.
+- If a route ends while **Loop** is enabled, execution restarts from the first waypoint.
 
 ## Rendering
 
-When a route is being previewed or executed, waypoints are rendered in-world as colored boxes connected by lines:
+When a route is previewed or executed, waypoints are rendered in-world as colored boxes connected by lines, each labelled with its type and index (`Walk #3`). The colors are settings under the Routes module's **Rendering** category.
 
-- **Walk** — Light green
-- **Etherwarp** — Light purple
-- **WaitTime** — Cyan
-- **WaitForPosition** — Orange
-- **ItemPlace** — Red
-- **Anchor blocks** (mining) — Purple
+Anchor blocks are labelled `W#1 A#2` (waypoint number, anchor number) and tree centers `W#1 Tree`. Line color, line width, box edge width, and depth-testing for anchor and tree-center boxes are all configurable in the same category.
+
+## Where Routes Are Stored
+
+Routes are saved as JSON files under:
+
+```
+.minecraft/Nebula/Routes/routes/
+```
+
+A route name containing slashes is stored in matching subfolders — `mining/crystal-hollows/jade` becomes `routes/mining/crystal-hollows/jade.json`. Such a route is also registered under its last segment (`jade`) as an alias, so you can refer to it by the short name as long as it is unique.
+
+Route file names **must** match their internal names inside .json, otherwise they will be overridden and saved under internal name instead.
+
+```json5
+{
+    "type": "MiningRoute",
+    "name": "mining/crystal-hollows/jade",
+    // ...
+}
+```
+
+Use `/nebula routes reload` after editing files by hand.
 
 ## Sharing
 
-Routes can be exported and imported via clipboard. Use `/nebula routes export` to open the export GUI where you select which routes to copy, or `/nebula routes import` to paste and import routes from another player. The format is compressed and prefixed with `nbroute:` (single) or `nbroutes:` (multiple).
+Routes can be exported and imported via the clipboard. Use `/nebula routes export` (or the export button in the Routes screen) to pick which routes to copy, and `/nebula routes import` to read routes from your clipboard and choose which to keep.
+
+The payload is prefixed with `nbroute:` or `nbroutes:`. Importing a route whose name already exists overwrites it — the import dialog marks those rows `already exists`.

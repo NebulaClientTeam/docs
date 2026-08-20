@@ -1,6 +1,6 @@
 ---
 title: Macro Integration
-description: How routes integrate with macros, including return routes, mining routes, and commission navigation.
+description: How routes integrate with macros, including return routes, mining and foraging routes, and commission navigation.
 ---
 
 ## Other Route Commands
@@ -12,6 +12,8 @@ description: How routes integrate with macros, including return routes, mining r
 /nebula routes export            — Open the export GUI
 /nebula routes import            — Import routes from clipboard
 ```
+
+`render` only accepts single routes.
 
 The `test` command accepts optional boolean flags after the name:
 
@@ -26,6 +28,10 @@ The `test` command accepts optional boolean flags after the name:
 - **tryToLastPoint** — Skip directly to the last waypoint if reachable.
 - **shouldWarp** — Warp before starting the route.
 
+## Selecting a Route in Macro Settings
+
+Route settings show a dropdown of the routes that setting can accept, with a search field and an **Open Routes Editor** shortcut. A setting that points at a missing route keeps the name and marks itself invalid with a warning icon.
+
 ## Return Back Routes
 
 Most macros have a **Return Back** category in their settings with:
@@ -33,33 +39,74 @@ Most macros have a **Return Back** category in their settings with:
 - **Enable Return Back** — Toggle return functionality on/off.
 - **Return Back Route** — The route name to follow when returning.
 
-The return route runs automatically when:
+Both accept any route type, including Multi Routes. The return route runs automatically when:
 
-- The **scheduler** pauses and resumes the macro (e.g., after a break).
+- The **scheduler** resumes the macro after a break, if its **Action During Break** is not `None`. With `Disconnect` the client reconnects first and then runs the route; with `Warp Island` it runs the route directly.
 - A **warp failsafe** fires (you got unexpectedly teleported).
 - You **die** and respawn.
-- You **disconnect** and reconnect.
+- You **disconnect** — the client reconnects and then runs the route.
 
 The return route should lead from a known spawn/warp point back to your macro's operating area. Use a **Warp** or **Island** type route so the client can warp to the correct island first.
+
+If the scheduler resumes a macro that has Return Back enabled but no route selected, the macro is disabled with an error.
+
+Some macros fall back to a built-in route when you leave the setting empty:
+
+| Macro | Setting names | Fallback when empty |
+|-------|--------------|---------------------|
+| Mining | Enable Return Back / Return Back Route | None — you must select a route |
+| Fishing | Enable Return Back / Return Back Route | Warps to the macro's configured fishing location |
+| Combat | Enable Return Back / Return Back Route | The active combat preset's route |
+| Foraging | Return After Interruptions / Return Route Name | A built-in route for the selected foraging area |
+
+The Diana and Dwarven Commissions macros always return using a fixed built-in route, which is not configurable.
 
 ## Mining Macro
 
 The mining macro has deep route integration through its **Route** settings category:
 
-- **Route Mode** — Enable route-based mining instead of free-roam.
-- **Route Name** — The mining route to follow (must be a Mining type route).
+- **Route Mode** — Enable route-based mining instead of free-roam. This replaces **Dynamically Scan Nearby Veins**.
+- **Route Name** — The mining route to follow. Only Mining routes are accepted, and Multi Routes are not.
+- **Don't Mine on Item Place Waypoint** — Move straight on from a waypoint whose next step is an ItemPlace instead of mining there.
 - **Anchor Blocks Mode** — Controls how anchor blocks are used:
   - **None** — Ignore anchors entirely.
-  - **Blacklist** — Avoid mining the anchor blocks (treat them as structure).
-  - **Whitelist** — Only mine the anchor blocks at each waypoint.
-  - **First Priority** — Mine anchor blocks first, then other nearby ores.
+  - **Blacklist** — Never mine the anchor blocks.
+  - **Whitelist** — Only mine the anchor blocks, in the order they were added, with forced rotations.
+  - **First Priority** — Mine the current waypoint's anchor blocks first, then other nearby ores.
   - **Last Priority** — Mine other ores first, then anchors as fallback.
-- **Skip Waypoints without Anchors** — If a waypoint has no anchors defined, skip it and move to the next one.
+- **Skip Waypoints without Anchors** — If a waypoint has no anchors defined, skip it and move to the next one. Only available in Whitelist and the two priority modes.
 - **Etherwarp Rotation Duration Multiplier** — Speed multiplier for etherwarp rotation (lower = faster, higher = slower/safer).
+- **Item Place Rotation Duration Multiplier** — The same, for rotating towards an ItemPlace target.
 - **Use Walking Rotations** — Enable smooth rotation while walking between waypoints.
 
-When Route Mode is on, the macro follows the route's waypoints in order, mining at each stop before moving to the next. When all waypoints are done, it loops back to the start.
+The macro runs the route one waypoint at a time and mines at each stop before moving on. When all waypoints are done, it loops back to the start. It also warps to the route's destination on start, so a Mining route with a warp command can be used from anywhere.
+
+Each waypoint's **Sneak** and **Allow Movement** overrides are applied to the mining itself at that stop, overriding the macro's own settings.
+
+## Foraging Macro
+
+The foraging macro's **Routes** category applies to the mapped tree types — Galatea (Fig), Galatea (Mangrove), and Torrhus Canyon (Helix):
+
+- **Use Custom Route** — Follow a route between mapped trees instead of picking the nearest tree.
+- **Route Name** — The route to follow. Accepts Foraging routes, and Multi Routes whose sub-routes are all Foraging routes.
+- **Skip Route Stops Without Trees** — Ignore route stops that are not linked to a tree center.
+
+Tree centers tell the macro which tree belongs to each stop.
 
 ## Dwarven & Glacite Commissions
 
-These macros use routes to navigate between commission areas and emissaries. Each commission type can have its own route configured. They support Multi Routes — so you can provide several path variants for each commission area.
+Both macros gate their route support behind **Use Routes Mode** in a **Routes** category. Every route setting there accepts any route type, including Multi Routes, which is the intended way to give a single area several path variants.
+
+**Dwarven Commissions** has:
+
+- One **&lt;Area&gt; Area Route** per mithril area and per mob commission (Glacite Walkers, Goblins, Treasure Hoarders).
+- **Use Global Emissary Route** with a **Global Emissary Name** and **Global Emissary Route**, for using one emissary for everything.
+- Otherwise, a per-area **&lt;Area&gt; Area Emissary Name** and **&lt;Area&gt; Area Emissary Route**.
+
+**Glacite Commissions** has:
+
+- **Use Glacite Route**, **Use Tungsten Route**, and **Use Umber Route**, each with their own route setting.
+- **Use Gemstone Routes** — one **&lt;Gemstone&gt; Gemstone Route** per gemstone commission.
+- **Use Gemstone Return to Area Routes** — one **&lt;Gemstone&gt; Gemstone Area Route** per gemstone, used to get back to the area.
+
+If a configured route cannot be found when the macro needs it, the macro reports the missing route name in chat.

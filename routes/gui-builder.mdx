@@ -3,15 +3,77 @@ title: GUI Builder & Manager
 description: Manage routes visually through the Nebula GUI.
 ---
 
-Open the Nebula GUI and navigate to the **Routes** screen to manage routes visually. The GUI provides:
+Open the Nebula GUI and navigate to the **Routes** screen to manage routes visually. Everything the [chat builder](/routes/command-builder) can do is available here.
 
-- **Route list** with search and filtering by type (`simple`, `warp`, `island`, `mining`, `multi`).
-- **Route details panel** showing waypoint count, type, and configuration.
-- **Create/Edit** routes with a visual waypoint builder.
-- **Test/Play** buttons to execute a route directly.
-- **Render toggle** to preview routes in-world.
-- **Import/Export** buttons for sharing routes.
-- **Duplicate and Delete** options.
-- **Anchor block selection mode** for mining routes — lets you click blocks in-world to mark them as anchors.
+## Route List
 
-For Multi Routes, the GUI shows all sub-routes within the group and lets you inspect each one individually.
+The left panel lists every loaded route.
+
+- **Type filters** — `All`, `Simple`, `Warp`, `Island`, `Mining`, `Foraging`, `Multi`.
+- **Search** — the shell's search field filters the list by route name.
+- **Toolbar buttons** — export routes, import routes from clipboard, create a route, and reload routes from disk.
+- **Route cards** — show the route name and a colored type chip. Multi Routes show `Multi · <count>` with a pink chip.
+- **Status indicators** — `Rendering` while a route is being previewed in-world, `Running` while it is being executed.
+
+## Route Details
+
+Selecting a route opens its details panel with the waypoint list and a summary card whose contents depend on the type:
+
+| Type | Shown |
+|------|-------|
+| Warp | Warp Command, Island (if set) |
+| Island | Island |
+| Mining | Warp Command (if set), total Anchor Blocks |
+| Foraging | Warp Command (if set), Tree Centers count |
+| Multi | The list of sub-routes |
+
+Actions along the panel: **Test**, **Render** / **Hide**, **Edit**, **Clone**, **Delete**, and **Stop** while a route is running.
+
+## Testing a Route
+
+**Test** opens a dialog with the same flags as `/nebula routes test`:
+
+- **Loop** — Repeat the route forever.
+- **One Waypoint** — Stop after completing one waypoint.
+- **Detect Index** — Auto-detect which waypoint to start from based on your position.
+- **Try Any Visible** — Start from any visible etherwarp point.
+- **Try To Last Point** — Skip directly to the last waypoint if it is reachable.
+- **Should Warp** — Warp before starting. Only shown for routes that can warp.
+
+## Creating and Editing
+
+**Create** asks for a type and a name, rejecting names that already exist. Editing opens an inline editor with **Save**, **Clear All**, and **Cancel**, plus the fields for that route type:
+
+- **Warp** — Warp Command (required), Island (optional).
+- **Island** — Island (required).
+- **Mining** — Warp Command (optional), anchor blocks section.
+- **Foraging** — Warp Command (optional), tree centers section.
+
+Saving is blocked with an inline message if the name is empty or taken, if there are no waypoints, or if a required warp command or island is missing.
+
+### Waypoint Editor
+
+The waypoint list supports adding to the end, inserting between any two rows, moving a waypoint up or down, editing it, and deleting it.
+
+The add/edit dialog holds:
+
+- **X / Y / Z** — typed directly, or filled with the **Player Position** or **Targeted Block** buttons.
+- **Walk** — tri-state **Sneak**, **Allow Movement**, and **Jump At End** overrides (Default / On / Off), plus a numeric **Reach Distance**.
+- **Etherwarp** — the same three tri-state overrides.
+- **WaitTime** — **Delay (ms)**.
+- **WaitForPosition** — **Distance** and **Timeout (ms)**.
+- **ItemPlace** — **Item ID** and **Cooldown (ms)**.
+
+### Anchor Blocks (Mining)
+
+The anchor section has one tab per waypoint, showing how many anchors each holds. Within the selected waypoint you can reorder or remove anchors.
+
+**Add** starts in-world selection mode and closes the GUI: **left-click** a block to add it, **right-click** to remove it. Reopen the routes menu and press **Done** to write the selection back to the waypoint.
+
+### Tree Centers (Foraging)
+
+The tree center section also has one tab per waypoint. **Set** / **Change** stores your current standing position as that waypoint's tree center, and **Clear** removes it. Each waypoint holds at most one.
+
+## Multi Routes
+
+For Multi Routes, the panel lists all sub-routes in the group and lets you inspect each one individually. A Multi Route cannot be edited as a group — open its sub-routes instead.

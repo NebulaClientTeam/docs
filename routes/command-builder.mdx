@@ -5,15 +5,17 @@ description: Create and edit routes entirely through chat commands.
 
 The route builder lets you create and edit routes entirely through chat commands. All commands are under `/nebula routes builder`.
 
+While a route is loaded in the builder it is rendered in-world automatically, so you can see waypoints as you place them.
+
 ## Creating a Route
 
 ```
 /nebula routes builder create <type> <name>
 ```
 
-Types: `Simple`, `Warp`, `Island`, `Mining`
+Types: `Simple`, `Warp`, `Island`, `Mining`, `Foraging`
 
-The name can include slashes for organization (e.g., `mining/crystal-hollows/jade`).
+The name can include slashes for organization (e.g., `mining/crystal-hollows/jade`). Creating a route with a name that already exists is rejected — use `editRoute` instead.
 
 ## Editing an Existing Route
 
@@ -21,7 +23,7 @@ The name can include slashes for organization (e.g., `mining/crystal-hollows/jad
 /nebula routes builder editRoute <name>
 ```
 
-Loads the route into the builder so you can modify it. Save when done.
+Loads the route into the builder so you can modify it. Save when done. Multi Routes cannot be loaded — edit their sub-routes individually.
 
 ## Adding Waypoints
 
@@ -33,9 +35,9 @@ Stand at the desired position, then run:
 
 - `add Walk` — Adds a walk waypoint at your feet.
 - `add Etherwarp` — Adds an etherwarp waypoint at your feet.
-- `add WaitTime <milliseconds>` — Adds a wait (e.g., `add WaitTime 3000` for 3 seconds).
-- `add WaitForPosition <distance> <timeout_ms>` — Waits until within `distance` blocks, times out after `timeout_ms`.
-- `add ItemPlace <item_id> [cooldown_ms]` — Places an item. You must be looking at the target block. Example: `add ItemPlace ender_pearl 5000`.
+- `add WaitTime <milliseconds>` — Adds a wait (e.g., `add WaitTime 3000` for 3 seconds). Defaults to `0` if omitted.
+- `add WaitForPosition  <distance> <timeout_ms>` — Adds a wait-for-position waypoint at your feet with the defaults **5 blocks** and a **10000 ms** timeout.
+- `add ItemPlace <item_id> [cooldown_ms]` — Places an item. You must be looking at the target block — the waypoint is stored at that **block's** position, not at your feet. Example: `add ItemPlace ender_pearl 5000`.
 
 Waypoints are added to the end of the route in order.
 
@@ -45,7 +47,7 @@ Waypoints are added to the end of the route in order.
 /nebula routes builder insert <index> <type> [args]
 ```
 
-Inserts before the given index (1-based). Existing waypoints shift forward.
+Inserts before the given index (1-based, valid from `1` to `waypoints + 1`). Existing waypoints shift forward.
 
 ## Moving a Waypoint
 
@@ -55,7 +57,7 @@ Stand at the new position, then:
 /nebula routes builder edit <index>
 ```
 
-This updates the position of waypoint `#index` to your current location while keeping its type and configuration.
+This updates the position of waypoint `#index` to your current location while keeping its type and configuration. Note that this also applies to `ItemPlace` waypoints, which will be moved to your feet rather than to the block you are looking at.
 
 ## Removing a Waypoint
 
@@ -71,6 +73,8 @@ Stand on the waypoint you want to remove:
 /nebula routes builder clear
 ```
 
+This also clears anchor blocks and tree centers.
+
 ## Configuring Waypoint Flags
 
 Walk and Etherwarp waypoints support extra flags:
@@ -81,13 +85,16 @@ Walk and Etherwarp waypoints support extra flags:
 
 Available keys:
 
-- `sneak` (or `shift`) — `true` / `false` — Force sneaking during this waypoint.
-- `movement` (or `allowmovement`) — `true` / `false` — Allow player movement input.
+- `sneak` (or `shift`) — `true` / `false` — Force sneaking.
+- `movement` (or `allowmovement`) — `true` / `false` — Override the mining macro's movement setting at this waypoint.
 - `jumpatend` (or `jump`) — `true` / `false` — Jump after reaching this waypoint (useful before etherwarp waypoints).
+- `reachdistance` (or `reach`) — a positive number, or `default` — **Walk waypoints only.** How close the pathfinder must get before the waypoint counts as reached.
+
+For the three boolean keys, any value other than `true` or `false` resets the flag to **Default** (no override).
 
 ## Setting Warp Command
 
-For Warp and Mining type routes:
+For Warp, Mining, and Foraging type routes:
 
 ```
 /nebula routes builder warpCommand <command>
@@ -115,13 +122,23 @@ For Mining type routes only. Look at an ore/block and run:
 
 This toggles the block you're looking at as an anchor for the given waypoint. Run it again on the same block to remove it. Anchor blocks tell the mining macro which blocks to prioritize at each waypoint.
 
+## Setting Tree Centers
+
+For Foraging type routes only. Stand on the position you want to mark and run:
+
+```
+/nebula routes builder treeCenter <waypoint_index>
+```
+
+This sets your **current position** as the tree center for that waypoint. Running it again from the same position removes it. Each waypoint holds at most one tree center — running it from a different position replaces the existing one.
+
 ## Saving
 
 ```
 /nebula routes builder save
 ```
 
-Saves the route and clears the builder. The route is immediately available for use.
+Saves the route and clears the builder. The route is immediately available for use. Saving is rejected if the route has no waypoints, if a Warp route has no warp command, or if an Island route has no island.
 
 ## Discarding Changes
 
@@ -134,3 +151,5 @@ Saves the route and clears the builder. The route is immediately available for u
 ```
 /nebula routes builder name <new_name>
 ```
+
+Rejected if a route with that name already exists.
