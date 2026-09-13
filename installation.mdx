@@ -20,17 +20,16 @@ description: "Launching Nebula for the first time."
 | Minecraft | 26.1.2 |
 | Mod loader | Fabric 0.19.3+ |
 | Java | 25+ |
-| macOS (Mac only) | Tahoe or newer |
 
 ## Before You Start
 
-Make sure you have bought Premium from the [official website](https://nebulaclient.net/pricing). The free **Basic** plan was discontinued and is no longer offered.
+Make sure you've purchased Premium from the [official website](https://nebulaclient.net/pricing). The free **Basic** plan has been discontinued.
 
 <Warning>
     **[nebulaclient.net](https://nebulaclient.net/) is the only official website.** Nebula is not distributed anywhere else.
 
-    Any site, video, or Discord server offering a "free", "cracked", or "leaked" build of Nebula is distributing malware. These builds are RATs — they steal your Minecraft account, Discord token,
-    browser passwords, and crypto wallets. There is no working free version to find.
+    Any site, video, or Discord server offering a "free", "cracked", or "leaked" build of Nebula is distributing malware. These builds are RATs that steal your Minecraft account, Discord token,
+    browser passwords, and crypto wallets. There is no working free version.
 
     If you are unsure whether a download is legitimate, ask in the [official Discord](https://nebulaclient.net/discord) before running it.
 </Warning>
@@ -39,42 +38,42 @@ Make sure you have bought Premium from the [official website](https://nebulaclie
 
 <Steps>
     <Step title="Download Nebula">
-        Go to your [User Profile](https://nebulaclient.net/profile) and click **Download** next to your username. Read the popup and press **Confirm Download**.
+        Go to your [User Profile](https://nebulaclient.net/profile) and click **Download** next to your username. Read the popup and click **Confirm Download**.
     </Step>
 
     <Step title="Install the mod loader">
-        We recommend using [Prism Launcher](https://prismlauncher.org), which makes it easier to install and manage multiple game instances, versions, and mods.
+        We recommend [Prism Launcher](https://prismlauncher.org) for installing and managing game instances, versions, and mods.
 
         If it's your first time using the launcher:
-        - Press **Add Instance** in the top left corner.
+
+        - Click **Add Instance** in the top left corner.
         - Select Minecraft version **26.1.2**.
         - Select the **Fabric** mod loader below and pick the version with a star next to it (usually the latest).
-        - Press **OK**.
+        - Click **OK**.
 
-        Otherwise, you can edit your existing instance with those settings. **Make sure you have Fabric selected!**
+        If you already have an instance, edit it to use these settings. Make sure you select **Fabric**.
     </Step>
 
     <Step title="Add Nebula to your mods folder">
-        Select your instance and press the **Edit** button on the right. A new menu pops up, where you go to the **Mods** tab on the right side.
+        Select your instance and click **Edit** on the right. In the window that opens, select the **Mods** tab.
 
-        Drag and drop the **NebulaLoader.jar** file you downloaded earlier.
+        Drag the **NebulaLoader.jar** file you downloaded earlier into the mods list.
     </Step>
 
     <Step title="Launch the game">
-        On first launch after pressing **Launch**, your game will automatically close with a Nebula Client popup telling you to restart your game. This is normal, and it means you have done everything correctly so far.
-        It will automatically install the **Fabric API**, **Fabric Language Kotlin**, and **HM API** mods for you.
+        Click **Launch**. On the first launch, the game closes and a Nebula Client popup asks you to restart it. This is expected: Nebula automatically installs **Fabric API**, **Fabric Language Kotlin**, and **HM API**.
 
-        Launch your game again and you should see Nebula's custom main menu. Connect to the server and run the `/n`, `/nebula`, or `/nebulaclient` command to reveal the in-game GUI.
+        Launch the game again. You should see Nebula's custom main menu. Connect to the server and run `/n`, `/nebula`, or `/nebulaclient` to open the in-game menu.
     </Step>
 </Steps>
 
 ## Updating
 
-Your Nebula loader automatically updates itself on every game startup. If there is a mandatory update that requires redownloading the mod, we always announce it in our Discord server.
+The Nebula loader updates automatically when you start the game. If a required update means you need to download the mod again, we announce it on our Discord server.
 
 ## Troubleshooting
 
-If your game is crashing, or you don't see Nebula Client in-game, make sure you have the versions listed in the **Requirements** section.
+If the game crashes or Nebula Client doesn't appear in-game, check that you're using the versions listed in the **Requirements** section.
 
 If you're still stuck, open a ticket in the `#🚑⎮support` channel of our [official Discord server](https://nebulaclient.net/discord).
 
@@ -82,80 +81,80 @@ Common errors and crashes:
 
 <AccordionGroup>
     <Accordion title="Stuck on loading, or 'Mod Download Failed' / 'Validation Error'">
-        Almost always your connection to our servers rather than anything you did wrong. Some ISPs, school and university networks, parental control filters, and some regions throttle or block the download.
+        This usually means there's a problem with your connection to our servers. Some ISPs, school and university networks, and parental control filters throttle or block the download. Regional restrictions can also block it.
 
-        Install [Cloudflare WARP](https://one.one.one.one/), turn it on and launch again. Any other VPN works too.
+        Install [Cloudflare WARP](https://one.one.one.one/), turn it on, and launch the game again. You can also use another VPN.
 
-        If an earlier attempt died halfway, the broken file has to be replaced before anything works, so keep launching until it finishes.
+        If a previous download stopped partway through, the loader needs to replace the incomplete file. Relaunch the game to retry the download.
     </Accordion>
 
     <Accordion title="'Unsupported Launcher' popup">
-        Use [Prism Launcher](https://prismlauncher.org). MultiMC works too. The Modrinth App, CurseForge and Lunar Client won't load Nebula at all.
+        Use [Prism Launcher](https://prismlauncher.org) or MultiMC. The Modrinth App, CurseForge, and Lunar Client can't load Nebula.
 
-        Make a Fabric instance in Prism and drop your Nebula loader jar into that instance's mods folder.
+        Create a Fabric instance in Prism and place **NebulaLoader.jar** in that instance's mods folder.
     </Accordion>
 
     <Accordion title="Nebula doesn't load, or the main menu looks normal">
-        Four things to check, in this order:
+        Check the following in order:
 
-        - Fabric has to actually be installed. Open **Edit -> Version** and look for it. An instance without Fabric launches perfectly fine and just ignores the loader.
-        - The first launch closes the game on purpose while it downloads Fabric API, Fabric Language Kotlin and HM API. Start it again.
-        - Some browsers save the loader as `.zip` or `.jar.txt`. It has to end in `.jar`.
-        - The mods folder that counts belongs to the instance you actually launch, not `%appdata%\.minecraft`.
+        - Open **Edit -> Version** and check that Fabric is installed. Without Fabric, the game launches but doesn't load Nebula.
+        - If this was the first launch, start the game again. Nebula closes the game while it downloads Fabric API, Fabric Language Kotlin, and HM API.
+        - Check that the loader's filename ends in `.jar`. Some browsers save it as `.zip` or `.jar.txt`.
+        - Make sure the loader is in the mods folder for the instance you're launching, rather than `%appdata%\.minecraft`.
     </Accordion>
 
     <Accordion title="The game crashes on startup">
-        Pull every other mod out and launch with only the Nebula loader. If that fixes it, put them back a handful at a time until it breaks again. **OneConfig** and **Taunahi** are both known to be incompatible.
+        Temporarily remove the other mods and launch the game with only the Nebula loader. If that fixes the crash, add the mods back a few at a time to find which one causes it. **OneConfig** and **Taunahi** are known to be incompatible.
 
-        Also check you haven't got two Nebula jars in there, or an old one sitting next to the current one.
+        Check that the mods folder contains only one copy of the Nebula loader. Remove any old or duplicate copies.
 
-        Still crashing with nothing else installed? Check your Java version.
+        If the game still crashes with only Nebula installed, check your Java version.
     </Accordion>
 
     <Accordion title="'Incompatible Minecraft Version' or 'Incompatible FabricLoader Version' popup">
-        The popup tells you which version it expected and which one it found. Edit the instance to match. Nebula tracks one Minecraft version at a time, so a newer release won't work until we update for it.
+        The popup shows the required version and the installed version. Edit your instance to use the required version. Nebula supports one Minecraft version at a time, so newer releases won't work until we add support for them.
 
         If you typed the version by hand when creating the instance, double-check it.
     </Accordion>
 
     <Accordion title="Windows or macOS blocks the loader">
-        Nebula isn't signed, so Windows Defender, Smart App Control, third party antivirus and macOS Gatekeeper all quarantine it from time to time, sometimes without telling you.
+        Nebula isn't signed, so Windows Defender, Smart App Control, third-party antivirus software, and macOS Gatekeeper may quarantine it without notifying you.
 
-        Add your instance folder to the exclusions, then download the loader again. A file that already got quarantined stays broken, so the exclusion on its own won't bring it back.
+        Add your instance folder to your security software's exclusions, then download the loader again. Adding an exclusion doesn't restore a file that's already been quarantined.
     </Accordion>
 
     <Accordion title="Black screen, rendering glitches, or graphics crash">
-        On a Mac, update to macOS Tahoe. Sonoma and Sequoia give you black screens and rendering crashes, and this fixes nearly every Mac report we get.
+        On a Mac, update to macOS Tahoe. Sonoma and Sequoia cause black screens and rendering crashes.
 
-        On Windows, update your GPU drivers. If the crash names LWJGL or GLFW, try a different LWJGL version in **Edit -> Settings -> Miscellaneous**.
+        On Windows, update your GPU drivers. If the crash message mentions LWJGL or GLFW, try a different LWJGL version in **Edit -> Settings -> Miscellaneous**.
     </Accordion>
 
     <Accordion title="Account Information Error: Unable to retrieve account information. Please make sure you are logged in with a valid account and try again.">
-        Nebula couldn't read the Minecraft account the game started with. Check that the instance is running in online mode and that you picked the right account in Prism before hitting **Launch**.
-        The account has to own Minecraft, so demo and cracked accounts won't work.
+        Nebula couldn't read your Minecraft account information. Check that the instance is running in online mode and that you've selected the correct account in Prism before clicking **Launch**.
+        The account must own Minecraft. Demo and cracked accounts won't work.
 
-        Too many failed launches in a row will rate limit you. Wait about 15 minutes before trying again.
+        Too many failed launches in a row will trigger a rate limit. Wait about 15 minutes before trying again.
     </Accordion>
 
     <Accordion title="Invalid HWID. Please reset it in your account settings if you have a new device.">
-        Your license is tied to one machine and something about that machine changed. A new PC, new hardware, a Windows reinstall, or booting into the other half of a dual boot will all do it.
+        Your license is tied to one computer, and its hardware ID has changed. Switching PCs, changing hardware, reinstalling Windows, or starting another operating system in a dual-boot setup can trigger this error.
 
-        Reset your HWID in your [profile settings](https://nebulaclient.net/profile/settings/account). It's free and self-serve, and can be done **once every 3 days**.
+        You can reset your HWID for free in your [profile settings](https://nebulaclient.net/profile/settings/account) **once every 3 days**.
 
-        Some customizations change how your machine is identified, and then this keeps coming back on the same PC. Custom PowerShell prompt themes are the usual culprit. If a reset doesn't hold, say so in your ticket.
+        Some customizations, especially custom PowerShell prompt themes, change how your computer is identified and can cause this error to recur on the same PC. If the error returns after a reset, mention that in your support ticket.
 
-        Your licence follows the hardware, not a Minecraft account, so there is nothing to link, and several Minecraft accounts on the same machine are fine.
+        You can use several Minecraft accounts on the same computer. Your license is tied to the hardware, so you don't need to link those accounts.
     </Accordion>
 
     <Accordion title="Nebula Client Error: Your session has expired, please redownload the loader from the profile page.">
-        Your loader jar carries a session with it, and that session eventually runs out. It usually turns up after you have not played for a while.
+        The session stored in your loader JAR has expired. This usually happens after you haven't played for a while.
 
-        Download a fresh jar from your [profile page](https://nebulaclient.net/profile) and swap it for the old one in your mods folder.
+        Download a new loader JAR from your [profile page](https://nebulaclient.net/profile) and replace the old one in your mods folder.
 
-        If the download keeps giving you the same expired file, your browser is serving it from cache. Download it again in a private window.
+        If you keep downloading the same expired file, your browser is using a cached copy. Download it again in a private window.
     </Accordion>
 
     <Accordion title="Low FPS, freezing, or crashes during a macro">
-        Check how much RAM is allocated to the instance in **Edit -> Settings -> Memory**. Allocations under 2 GB cause progressive FPS loss and eventual crashes. 4-6 GB is a common amount. Don't give it more than you actually have free.
+        Check how much RAM is allocated to the instance in **Edit -> Settings -> Memory**. Allocating less than 2 GB causes FPS to drop over time and eventually leads to crashes. A typical allocation is 4–6 GB. Don't allocate more RAM than you have available.
     </Accordion>
 </AccordionGroup>
